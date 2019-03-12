@@ -14,7 +14,7 @@ function(err){
 
 
 var initilize = function(data){
-  var height = 200;
+  var height = 500;
   var width = 600;
   var barWidth = (width/data.length)
   var colors=d3.scaleOrdinal(d3.schemePaired);
@@ -25,7 +25,7 @@ document.getElementsByTagName("p")[0].innerHTML = "0";
     .attr("height", height);
 
     svg.selectAll("rect")
-           .data(data)
+           .data(data[0].grades)
            .enter()
            .append("rect")
            .attr("x", function(d,i){
@@ -40,10 +40,30 @@ document.getElementsByTagName("p")[0].innerHTML = "0";
            .attr("width", barWidth)
             // .attr('transform', 'translate(' + (margins.right+15) + ',' + margins.top + ')')
            .attr("fill", function(d){
-             return colors(d.day);
+             return colors(d.name);
            });
 
+           var xScale = d3.scaleLinear()
+                      .domain([0, 4])
+                      .range([5,width]);
+                  var yScale = d3.scaleLinear()
+                      .domain([0, 100])
+                      .range([height,0]);
 
+
+          var yAxis = d3.axisLeft(yScale)
+                   .ticks(10)
+                   .tickSize(10)
+     svg.append("g").classed("yAxis",true)
+     .call(yAxis)
+     .attr('transform', 'translate(' + (margins.left +10)+ ','+margins.top+')');
+
+var xAxis = d3.axisBottom(xScale)
+              .ticks(4)
+              .tickSize(1)
+              svg.append("g").classed("xAxis",true)
+              .call(xAxis)
+              .attr('transform', 'translate(' + (margins.left)+ ','+(margins.top+10+height)+')');
 }
 
 
