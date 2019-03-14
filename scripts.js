@@ -18,21 +18,21 @@ var initilize = function(data){
   var width = 600;
   var barWidth = (width/data.length)
   var colors=d3.scaleOrdinal(d3.schemePaired);
-  var margins = {top: 20, right: 50, bottom: 20, left: 30}
+  var margins = {top: 40, right: 50, bottom: 20, left: 30}
 document.getElementsByTagName("p")[0].innerHTML = "0";
   var svg = d3.select("svg")
     .attr("width", width)
-    .attr("height", height);
+    .attr("height", height + 60);
 
     svg.selectAll("rect")
            .data(data[0].grades)
            .enter()
            .append("rect")
            .attr("x", function(d,i){
-             return i * barWidth;
+             return i * 150 + 45;
            })
            .attr("y", function(d){
-             return 150;
+             return 495;
            })
            .attr("height", function(d){
              return 50;
@@ -44,7 +44,7 @@ document.getElementsByTagName("p")[0].innerHTML = "0";
            });
 
            var xScale = d3.scaleLinear()
-                      .domain([0, 4])
+                      .domain([0, 3])
                       .range([5,width]);
                   var yScale = d3.scaleLinear()
                       .domain([0, 100])
@@ -56,14 +56,18 @@ document.getElementsByTagName("p")[0].innerHTML = "0";
                    .tickSize(10)
      svg.append("g").classed("yAxis",true)
      .call(yAxis)
-     .attr('transform', 'translate(' + (margins.left +10)+ ','+margins.top+')');
+     .attr('transform', 'translate(' + (margins.left +10)+ ','+(margins.top + 5)+')');
 
 var xAxis = d3.axisBottom(xScale)
               .ticks(4)
+              .tickFormat(function(d,i){
+                console.log(d, "i", i);
+                return data[0].grades[i].name;
+              })
               .tickSize(1)
               svg.append("g").classed("xAxis",true)
               .call(xAxis)
-              .attr('transform', 'translate(' + (margins.left)+ ','+(margins.top+10+height)+')');
+              .attr('transform', 'translate(' + (margins.left + 10)+ ','+(height - margins.top+5)+')');
 }
 
 
